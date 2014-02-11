@@ -145,7 +145,7 @@ printing_presses:
      pamphlet_lot:
         Paper:
            material: 'PAPER'
-           amount: 4
+           amount: 8
         Ink:
            material: 'INK_SACK'
            durability: 0
