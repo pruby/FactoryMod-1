@@ -287,4 +287,9 @@ public class PrintingPressManager implements Manager
 		return FactoryModPlugin.PRINTING_PRESSES_SAVE_FILE;
 	}
 
+	@Override
+	public List<PrintingPress> getLoadedFactories() {
+		return producers;
+	}
+
 }

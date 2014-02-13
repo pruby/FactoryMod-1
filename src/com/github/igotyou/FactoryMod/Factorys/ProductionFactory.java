@@ -298,4 +298,12 @@ public class ProductionFactory extends BaseFactory
 	public int getMaxRepair() {
 		return productionFactoryProperties.getRepair();
 	}
+	
+	public boolean keepChunksLoaded() {
+		return active && chunkLoadDistance() > 0;
+	}
+	
+	public int chunkLoadDistance() {
+		return productionFactoryProperties.getChunkLoadDistance();
+	}
 }

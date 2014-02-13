@@ -52,4 +52,7 @@ public interface Factory
 	public Location getInventoryLocation();
 	
 	public Location getPowerSourceLocation();
+	
+	public boolean keepChunksLoaded();
+	public int chunkLoadDistance();
 }

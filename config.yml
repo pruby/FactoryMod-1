@@ -1954,6 +1954,24 @@ production_factories:
     repair_inputs:
       Stick:
         material: STICK
+  Time_Machine:
+    name: Time Machine
+    fuel:
+      Charcoal:
+        material: COAL
+        durability: 1
+    inputs:
+      Ender_Chest:
+        material: ENDER_CHEST
+        amount: 64
+    recipes:
+      - Burn_Eyes_of_Ender
+    repair_multiple: 16
+    chunk_load_distance: 3
+    fuel_time: 120
+    repair_inputs:
+      Ender_Chest:
+        material: ENDER_CHEST
 production_recipes:
   Wood_XP_Bottle_0:
     name: Brew XP Bottles  - 1
@@ -5006,3 +5024,11 @@ production_recipes:
       Iron Horse Armor:
         material: IRON_BARDING
         amount: 1
+  Burn_Eyes_of_Ender:
+    name: Stabilise Time Flow
+    production_time: 600
+    inputs:
+      Iron Ingot:
+        material: EYE_OF_ENDER
+        amount: 1
+    outputs: []

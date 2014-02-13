@@ -335,4 +335,9 @@ public class ProductionManager implements Manager
 		return FactoryModPlugin.PRODUCTION_SAVES_FILE;
 	}
 
+	@Override
+	public List<ProductionFactory> getLoadedFactories() {
+		return producers;
+	}
+
 }

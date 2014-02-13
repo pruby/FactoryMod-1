@@ -2,6 +2,7 @@ package com.github.igotyou.FactoryMod.interfaces;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.bukkit.Location;
 
@@ -76,4 +77,6 @@ public interface Manager
 */
 	public String getSavesFileName();
 
+public List<? extends Factory> getLoadedFactories();
+	
 }

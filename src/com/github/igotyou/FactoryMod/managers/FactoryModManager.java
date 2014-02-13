@@ -312,4 +312,8 @@ public class FactoryModManager
 		}
 		return response;
 	}
+
+	public List<Manager> getManagers() {
+		return managers;
+	}
 }

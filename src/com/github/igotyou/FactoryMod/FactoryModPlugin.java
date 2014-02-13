@@ -16,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.igotyou.FactoryMod.FactoryObject.FactoryType;
 import com.github.igotyou.FactoryMod.interfaces.Properties;
+import com.github.igotyou.FactoryMod.listeners.ChunkLoadingListener;
 import com.github.igotyou.FactoryMod.listeners.FactoryModListener;
 import com.github.igotyou.FactoryMod.listeners.RedstoneListener;
 import com.github.igotyou.FactoryMod.managers.FactoryModManager;
@@ -79,6 +80,7 @@ public class FactoryModPlugin extends JavaPlugin
 		try
 		{
 			getServer().getPluginManager().registerEvents(new FactoryModListener(manager), this);
+			getServer().getPluginManager().registerEvents(new ChunkLoadingListener(manager), this);
 			getServer().getPluginManager().registerEvents(new RedstoneListener(manager, manager.getProductionManager()), this);
 		}
 		catch(Exception e)
@@ -242,10 +244,11 @@ public class FactoryModPlugin extends JavaPlugin
 				factoryRecipes.add(productionRecipes.get(ouputRecipeIterator.next()));
 			}
 			int repair=configSection.getInt("repair_multiple",0);
+			int chunkLoadDistance=configSection.getInt("chunk_load_distance",0);
 			//Create repair recipe
 			productionRecipes.put(title+"REPAIR",new ProductionRecipe(title+"REPAIR","Repair Factory",1,repairs));
 			factoryRecipes.add(productionRecipes.get(title+"REPAIR"));
-			ProductionProperties productionProperty = new ProductionProperties(inputs, factoryRecipes, fuel, fuelTime, factoryName, repair);
+			ProductionProperties productionProperty = new ProductionProperties(inputs, factoryRecipes, fuel, fuelTime, factoryName, repair, chunkLoadDistance);
 			productionProperties.put(title, productionProperty);
 		}
 		

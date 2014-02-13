@@ -16,9 +16,10 @@ public class ProductionProperties implements Properties
 	private int energyTime;
 	private String name;
 	private int repair;
+	private int chunkLoadDistance;
 	
 	public ProductionProperties(ItemList<NamedItemStack> inputs, List<ProductionRecipe> recipes,
-			ItemList<NamedItemStack> fuel, int energyTime, String name,int repair)
+			ItemList<NamedItemStack> fuel, int energyTime, String name,int repair,int chunkLoadDistance)
 	{
 		this.inputs = inputs;
 		this.recipes = recipes;
@@ -26,6 +27,7 @@ public class ProductionProperties implements Properties
 		this.energyTime = energyTime;
 		this.name = name;
 		this.repair=repair;
+		this.chunkLoadDistance = chunkLoadDistance;
 	}
 
 	public int getRepair()
@@ -56,5 +58,9 @@ public class ProductionProperties implements Properties
 	public String getName()
 	{
 		return name;
+	}
+	
+	public int getChunkLoadDistance() {
+		return chunkLoadDistance;
 	}
 }

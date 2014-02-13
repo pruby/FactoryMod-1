@@ -512,4 +512,12 @@ public abstract class BaseFactory extends FactoryObject implements Factory {
 	public List<InteractionResponse> getCentralBlockResponse() {
 		return new ArrayList<InteractionResponse>();
 	}
+	
+	public boolean keepChunksLoaded() {
+		return false;
+	}
+	
+	public int chunkLoadDistance() {
+		return 0;
+	}
 }
