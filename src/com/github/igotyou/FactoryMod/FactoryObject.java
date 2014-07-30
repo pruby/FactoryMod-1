@@ -33,7 +33,8 @@ public class FactoryObject
 	{
 		PRODUCTION,
 		PRINTING_PRESS,
-		NETHER_FACTORY
+		NETHER_FACTORY,
+		BAT_ROOST
 	}
 	
 	

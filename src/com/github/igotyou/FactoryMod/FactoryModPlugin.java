@@ -26,6 +26,7 @@ import com.github.igotyou.FactoryMod.listeners.NoteStackListener;
 import com.github.igotyou.FactoryMod.listeners.RedstoneListener;
 import com.github.igotyou.FactoryMod.managers.FactoryModManager;
 import com.github.igotyou.FactoryMod.properties.NetherFactoryProperties;
+import com.github.igotyou.FactoryMod.properties.BatRoostProperties;
 import com.github.igotyou.FactoryMod.properties.PrintingPressProperties;
 import com.github.igotyou.FactoryMod.properties.ProductionProperties;
 import com.github.igotyou.FactoryMod.recipes.ProductionRecipe;
@@ -45,6 +46,7 @@ public class FactoryModPlugin extends JavaPlugin
 	public static HashMap<String,ProductionRecipe> productionRecipes;
 	public PrintingPressProperties printingPressProperties;
 	public NetherFactoryProperties netherFactoryProperties;
+	private BatRoostProperties batRoostProperties;
 	
 	public static final String VERSION = "v1.0"; //Current version of plugin
 	public static final String PLUGIN_NAME = "FactoryMod"; //Name of plugin
@@ -52,6 +54,7 @@ public class FactoryModPlugin extends JavaPlugin
 	public static final String PRODUCTION_SAVES_FILE = "productionSaves"; // The production saves file name
 	public static final int TICKS_PER_SECOND = 20; //The number of ticks per second
 	public static final String PRINTING_PRESSES_SAVE_FILE = "pressSaves";
+	public static final String BAT_ROOSTS_SAVES_FILE = "batRoosts";
 	
 	public static final String NETHER_FACTORY_SAVE_FILE = "netherSaves";
 	public static boolean DISABLE_PORTALS;
@@ -301,6 +304,8 @@ public class FactoryModPlugin extends JavaPlugin
 		ConfigurationSection configNetherFactory=config.getConfigurationSection("nether_factory");
 		printingPressProperties = PrintingPressProperties.fromConfig(this, configPrintingPresses);
 		netherFactoryProperties = NetherFactoryProperties.fromConfig(this, configNetherFactory);
+		ConfigurationSection configBatRoosts=config.getConfigurationSection("bat_roosts");
+		batRoostProperties = BatRoostProperties.fromConfig(this, configBatRoosts);
 	}
 	
 	private List<ProbabilisticEnchantment> getEnchantments(ConfigurationSection configEnchantments)
@@ -461,5 +466,9 @@ public class FactoryModPlugin extends JavaPlugin
 	
 	public NetherFactoryProperties getNetherFactoryProperties() {
 		return netherFactoryProperties;
+	}
+
+	public BatRoostProperties getBatRoostProperties() {
+		return batRoostProperties;
 	}
 }

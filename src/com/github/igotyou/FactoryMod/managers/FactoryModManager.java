@@ -66,6 +66,7 @@ public class FactoryModManager
 			initializeProductionManager();
 			initializeNetherFactoryManager();
 			initializePrintingPressManager();
+			initializeBatRoostManager();
 		//}
 	}
 	
@@ -87,6 +88,15 @@ public class FactoryModManager
 		PrintingPressManager printingMan = new PrintingPressManager(plugin);
 		
 		managers.add(printingMan);
+	}
+	/**
+	 * Initializes the Bat Roost Manager
+	 */
+	private void initializeBatRoostManager()
+	{
+		BatRoostManager batMan = new BatRoostManager(plugin);
+		
+		managers.add(batMan);
 	}
 	
 	/**

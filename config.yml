@@ -164,7 +164,34 @@ printing_presses:
            durability: 2
            amount: 6
      security_notes_per_lot: 128
-
+bat_roosts:
+  fuel:
+    Apple:
+      material: 'APPLE'
+  costs:
+    construction:
+      "Bat Eggs":
+         material: MONSTER_EGG
+         amount: 16
+         durability: 65
+      "Apples":
+         material: APPLE
+         amount: 128
+      "Iron Bars":
+         material: IRON_FENCE
+         amount: 256
+      "Leads":
+         material: LEASH
+         amount: 64
+    replenish_colony:
+      "Bat Eggs":
+         material: MONSTER_EGG
+         amount: 16
+         durability: 65
+    feed_colony:
+      "Apples":
+         material: APPLE
+         amount: 24
 crafting:
   disable:
   enable:
