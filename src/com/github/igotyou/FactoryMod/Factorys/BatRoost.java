@@ -1,9 +1,18 @@
 package com.github.igotyou.FactoryMod.Factorys;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.igotyou.FactoryMod.properties.BatRoostProperties;
 import com.github.igotyou.FactoryMod.utility.InteractionResponse;
@@ -21,6 +30,9 @@ public class BatRoost extends BaseFactory {
 
 	private int lastFoodLevel;
 	private long lastFoodUpdateTime;
+
+	private final Pattern xCoord = Pattern.compile("X([-+][0-9]+)", Pattern.CASE_INSENSITIVE);
+	private final Pattern zCoord = Pattern.compile("Z([-+][0-9]+)", Pattern.CASE_INSENSITIVE);
 
 	public BatRoost(Location factoryLocation,
 			Location factoryInventoryLocation, Location factoryPowerSource,
@@ -75,7 +87,7 @@ public class BatRoost extends BaseFactory {
 			lastFoodUpdateTime += batRoostProperties.getTicksPerFood();
 		}
 	}
-	
+			
 	@Override
 	public void updateRepair(double percent) {
 		// Skip normal loss of repair, use food instead
@@ -197,6 +209,10 @@ public class BatRoost extends BaseFactory {
 		{
 			responses.add(new InteractionResponse(InteractionResult.SUCCESS,"Will replenish the colony to full strength using "+getRepairs().toString()+"."));
 		}
+		if (mode == OperationMode.SEND_MESSAGE) {
+			Location target = getTargetLocation();
+			responses.add(new InteractionResponse(InteractionResult.SUCCESS,String.format("Target destination for bat-o-grams is X%+d Z%+d.", target.getBlockX(), target.getBlockZ())));
+		}
 		return responses;
 	}
 		public enum OperationMode {
@@ -239,7 +255,30 @@ public class BatRoost extends BaseFactory {
 	protected void recipeFinished() {
 		switch(mode) {
 		case REPAIR:
-			
+		case SEND_MESSAGE:
+			Inventory inventory = getInventory();
+			Location destination = getTargetLocation();
+			ListIterator<ItemStack> inventoryIterator = inventory.iterator();
+			while (inventoryIterator.hasNext()) {
+				ItemStack stack = inventoryIterator.next();
+				if (stack == null) {
+					continue;
+				}
+				
+				ItemStack moveStack = stack.clone();
+				moveStack.setAmount(1);
+				
+				if (stack.getAmount() > 1) {
+					stack.setAmount(stack.getAmount() - 1);
+					inventoryIterator.set(stack);
+				} else {
+					inventoryIterator.set(new ItemStack(Material.AIR, 0));
+				}
+				
+				destination.getWorld().dropItem(destination, moveStack);
+				
+				break;
+			}
 		case FEED_COLONY:
 			lastFoodLevel = lastFoodLevel + batRoostProperties.getFoodPerFeeding();
 			int maxFood = batRoostProperties.getMaxFoodLevel();
@@ -249,6 +288,38 @@ public class BatRoost extends BaseFactory {
 			lastFoodUpdateTime = factoryLocation.getWorld().getFullTime();
 			break;
 		}
+	}
+	
+	public Location getTargetLocation() {
+		Location target = factoryLocation.clone();
+		target.setY(257);
+		
+		for (ItemStack stack : getInventory().getContents()) {
+			if (stack == null) {
+				continue;
+			}
+			
+			if (stack.getType().equals(Material.BOOK_AND_QUILL) || stack.getType().equals(Material.WRITTEN_BOOK)) {
+				ItemMeta meta = stack.getItemMeta();
+				if (meta instanceof BookMeta) {
+					BookMeta bookData = (BookMeta) meta;
+					if (bookData.getPageCount() >= 1) {
+						String firstPage = bookData.getPages().get(0);
+						System.err.println(firstPage);
+						Matcher xMatcher = xCoord.matcher(firstPage);
+						Matcher zMatcher = zCoord.matcher(firstPage);
+						if (xMatcher.find() && zMatcher.find()) {
+							int x = Integer.parseInt(xMatcher.group(1));
+							int z = Integer.parseInt(zMatcher.group(1));
+							target.setX(x);
+							target.setZ(z);
+							return target;
+						}
+					}
+				}
+			}
+		}
+		return target;
 	}
 
 	@Override
