@@ -19,7 +19,9 @@ import org.bukkit.material.Lever;
 import org.bukkit.material.MaterialData;
 
 import com.github.igotyou.FactoryMod.FactoryModPlugin;
+import com.github.igotyou.FactoryMod.Factorys.BatRoost;
 import com.github.igotyou.FactoryMod.Factorys.ProductionFactory;
+import com.github.igotyou.FactoryMod.managers.BatRoostManager;
 import com.github.igotyou.FactoryMod.managers.FactoryModManager;
 import com.github.igotyou.FactoryMod.managers.ProductionManager;
 import com.github.igotyou.FactoryMod.utility.InteractionResponse;
@@ -30,14 +32,16 @@ public class RedstoneListener implements Listener {
 	private FactoryModManager factoryMan;
 	//this is a lazy fix...
 	private ProductionManager productionMan;
+	private BatRoostManager batMan;
 	
 	/**
 	 * Constructor
 	 */
-	public RedstoneListener(FactoryModManager factoryManager, ProductionManager productionManager)
+	public RedstoneListener(FactoryModManager factoryManager, ProductionManager productionManager, BatRoostManager batMan)
 	{
 		this.factoryMan = factoryManager;
 		this.productionMan = productionManager;
+		this.batMan = batMan;
 	}
 	
 	@EventHandler(ignoreCancelled = true)
@@ -118,6 +122,23 @@ public class RedstoneListener implements Listener {
 						}
 						
 						if (!factory.getActive()) {
+							// Try to start the factory
+							factory.togglePower();
+						}
+					}
+					
+					// Or a bat roost?
+					if (batMan.factoryExistsAt(block.getLocation()))
+					{
+						BatRoost factory = (BatRoost) batMan.getFactory(block.getLocation());
+						
+						Block lever = factory.findActivationLever();
+						if (lever == null) {
+							// No lever - don't respond to redstone
+							return;
+						}
+						
+						if (!factory.getActive() ) {
 							// Try to start the factory
 							factory.togglePower();
 						}

@@ -298,6 +298,18 @@ public class FactoryModManager
 		return null;
 	}
 
+	public BatRoostManager getBatRoostManager() {
+		for (Manager manager : managers)
+		{
+			if (manager.getClass() == BatRoostManager.class)
+			{
+				return (BatRoostManager) manager;
+			}
+		}
+		
+		return null;
+	}
+
 	public Factory getFactory(Location location) {
 		for (Manager manager : managers)
 		{

@@ -105,7 +105,7 @@ public class FactoryModPlugin extends JavaPlugin
 		try
 		{
 			getServer().getPluginManager().registerEvents(new FactoryModListener(manager), this);
-			getServer().getPluginManager().registerEvents(new RedstoneListener(manager, manager.getProductionManager()), this);
+			getServer().getPluginManager().registerEvents(new RedstoneListener(manager, manager.getProductionManager(), manager.getBatRoostManager()), this);
 			getServer().getPluginManager().registerEvents(new NoteStackListener(this), this);
 		}
 		catch(Exception e)

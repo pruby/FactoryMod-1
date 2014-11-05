@@ -68,7 +68,6 @@ public class BatRoost extends BaseFactory {
 		}
 		
 		int foodUpdates = (int) (time - lastFoodUpdateTime) / batRoostProperties.getTicksPerFood();
-		System.err.println("Food update check: (" + time + "," + lastFoodUpdateTime + "," + foodUpdates + ")");
 		
 		for (int i = 0; i < foodUpdates; ++i) {
 			if (lastFoodLevel > 0) {
@@ -261,7 +260,7 @@ public class BatRoost extends BaseFactory {
 			ListIterator<ItemStack> inventoryIterator = inventory.iterator();
 			while (inventoryIterator.hasNext()) {
 				ItemStack stack = inventoryIterator.next();
-				if (stack == null) {
+				if (stack == null || stack.getMaxStackSize() < 16) {
 					continue;
 				}
 				
@@ -305,7 +304,6 @@ public class BatRoost extends BaseFactory {
 					BookMeta bookData = (BookMeta) meta;
 					if (bookData.getPageCount() >= 1) {
 						String firstPage = bookData.getPages().get(0);
-						System.err.println(firstPage);
 						Matcher xMatcher = xCoord.matcher(firstPage);
 						Matcher zMatcher = zCoord.matcher(firstPage);
 						if (xMatcher.find() && zMatcher.find()) {
@@ -350,10 +348,13 @@ public class BatRoost extends BaseFactory {
 				}
 				
 				Location target = getTargetLocation();
-				if (target.distance(factoryLocation) > batRoostProperties.getDistanceLimit()) {
+				int maxRepair = batRoostProperties.getMaxPopulationHealth();
+				double health = 1-currentRepair/maxRepair;
+				int maxDistance = (int) (batRoostProperties.getDistanceLimit() * health);
+				if (target.distance(factoryLocation) > maxDistance) {
 					// Too far away to send
 					List<InteractionResponse> response=new ArrayList<InteractionResponse>();
-					response.add(new InteractionResponse(InteractionResult.FAILURE,"The destination is too far away - limit is " + batRoostProperties.getDistanceLimit() + " blocks."));
+					response.add(new InteractionResponse(InteractionResult.FAILURE,"The destination is too far away - limit at current health is " + maxDistance + " blocks."));
 					return response;
 				}
 			}
