@@ -27,6 +27,7 @@ public class BatRoostProperties {
 	private int foodPerFeeding; // How much the food count increases from a single feeding.
 	private double energyTime;
 	private Random random;
+	private int distanceLimit;
 	
 	public BatRoostProperties(
 		String name,
@@ -40,7 +41,8 @@ public class BatRoostProperties {
 		int ticksPerFood,
 		int foodPerFeeding,
 		int starvationRate,
-		int healingRate
+		int healingRate,
+		int distanceLimit
 		)
 	{
 		this.name = name;
@@ -55,6 +57,7 @@ public class BatRoostProperties {
 		this.starvationRate = starvationRate;
 		this.healingRate = healingRate;
 		this.foodPerFeeding = foodPerFeeding;
+		this.distanceLimit = distanceLimit;
 		this.random = new Random();
 	}
 	
@@ -71,10 +74,11 @@ public class BatRoostProperties {
 		int foodPerFeeding = configBatRoost.getInt("food_per_feeding",24);
 		int starvationRate = configBatRoost.getInt("starvation_rate",40);
 		int healingRate = configBatRoost.getInt("healing_rate",10);
+		int distanceLimit = configBatRoost.getInt("distance_limit",3000);
 		double energyTime = configBatRoost.getDouble("energy_time",5);
 		return new BatRoostProperties(ppName, ppFuel, ppConstructionCost, replenishColonyMaterials,
 				feedingMaterials, energyTime, maxFoodLevel, maxPopulationHealth,
-				ticksPerFood, foodPerFeeding, starvationRate, healingRate);
+				ticksPerFood, foodPerFeeding, starvationRate, healingRate, distanceLimit);
 	}
 	
 	public boolean testHeal(int health) {
@@ -127,4 +131,8 @@ public class BatRoostProperties {
 
 	public int getStarvationRate() {
 		return starvationRate;
+	}
+
+	public int getDistanceLimit() {
+		return distanceLimit;
 	}}

@@ -338,6 +338,26 @@ public class BatRoost extends BaseFactory {
 	@Override
 	public List<InteractionResponse> togglePower() {
 		updateFood();
+		if (!active) {
+			if (mode == OperationMode.SEND_MESSAGE) {
+				long time = this.getCenterLocation().getWorld().getFullTime();
+				long phase = time % 24000;
+				if (phase < 12000) {
+					// Day time
+					List<InteractionResponse> response=new ArrayList<InteractionResponse>();
+					response.add(new InteractionResponse(InteractionResult.FAILURE,"The bats are asleep! They can only fly at night."));
+					return response;
+				}
+				
+				Location target = getTargetLocation();
+				if (target.distance(factoryLocation) > batRoostProperties.getDistanceLimit()) {
+					// Too far away to send
+					List<InteractionResponse> response=new ArrayList<InteractionResponse>();
+					response.add(new InteractionResponse(InteractionResult.FAILURE,"The destination is too far away - limit is " + batRoostProperties.getDistanceLimit() + " blocks."));
+					return response;
+				}
+			}
+		}
 		return super.togglePower();
 	}
 
